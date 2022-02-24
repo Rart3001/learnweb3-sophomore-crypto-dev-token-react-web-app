@@ -1,6 +1,7 @@
 // NFT COLLECTION
-const NFT_CONTRACT_ADDRESS = "0x6F795d11aF1A9cd30De9517F181Ec090594F61C9";
-const NFT_CONTRACT_ABI = [
+export const NFT_CONTRACT_ADDRESS =
+  "0x6F795d11aF1A9cd30De9517F181Ec090594F61C9";
+export const NFT_CONTRACT_ABI = [
   {
     inputs: [
       {
@@ -585,8 +586,9 @@ const NFT_CONTRACT_ABI = [
 ];
 
 // TOKEN
-const TOKEN_CONTRACT_ADDRESS = "0xdA50Cab775286a6bF8aF047Ba79906cBca516807";
-const TOKEN_CONTRACT_ABI = [
+export const TOKEN_CONTRACT_ADDRESS =
+  "0xe3560C95cFeA7e98D0cf4121322b5E1A5f87325B";
+export const TOKEN_CONTRACT_ABI = [
   {
     inputs: [
       {
@@ -740,7 +742,7 @@ const TOKEN_CONTRACT_ABI = [
   },
   {
     inputs: [],
-    name: "clain",
+    name: "claim",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

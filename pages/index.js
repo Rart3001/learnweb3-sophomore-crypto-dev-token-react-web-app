@@ -72,9 +72,8 @@ export default function Home() {
       const signer = await getProviderOrSigner(true);
       const address = await signer.getAddress();
       const balance = await tokenContract.balanceOf(address);
+      console.log("balance = " + balance);
       setBalanceOfCryptoDevTokens(balance);
-
-      tokenContract.getBalance();
     } catch (error) {
       console.error("getBalanceOfCryptoDevTokens error:", error);
       setBalanceOfCryptoDevTokens(zero);
@@ -91,7 +90,7 @@ export default function Home() {
       );
 
       const value = 0.001 * amount;
-      const transaction = await tokenContract.min(amount, {
+      const transaction = await tokenContract.mint(amount, {
         value: utils.parseEther(value.toString()),
       });
 
@@ -110,18 +109,26 @@ export default function Home() {
 
   const claimCryptoDevTokens = async () => {
     try {
+      // We need a Signer here since this is a 'write' transaction.
+      // Create an instance of tokenContract
       const signer = await getProviderOrSigner(true);
+      // Create an instance of tokenContract
       const tokenContract = new Contract(
         TOKEN_CONTRACT_ADDRESS,
         TOKEN_CONTRACT_ABI,
         signer
       );
-      const transaction = await tokenContract.claim();
+      const tx = await tokenContract.claim();
       setLoading(true);
-      await transaction.wait();
+      // wait for the transaction to get mined
+      await tx.wait();
       setLoading(false);
-    } catch (error) {
-      console.error("claimCryptoDevTokens error:", error);
+      window.alert("Sucessfully claimed Crypto Dev Tokens");
+      await getBalanceOfCryptoDevTokens();
+      await getTotalTokensMinted();
+      await getTokensToBeClaimed();
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -143,6 +150,7 @@ export default function Home() {
   const getProviderOrSigner = async (needSigner = false) => {
     const provider = await web3ModalRef.current.connect();
     const web3Provider = new providers.Web3Provider(provider);
+
     const { chainId } = await web3Provider.getNetwork();
     if (chainId !== 4) {
       window.alert("Change the network to Rinkeby");
